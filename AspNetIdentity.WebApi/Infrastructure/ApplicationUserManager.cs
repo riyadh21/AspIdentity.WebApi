@@ -42,6 +42,16 @@ namespace AspNetIdentity.WebApi.Infrastructure
                 RequireUniqueEmail = true
             };
 
+            //Configure validation logic for passwords
+            appUserManager.PasswordValidator = new PasswordValidator
+            {
+                RequiredLength = 6, //length atleast 6 char
+                RequireNonLetterOrDigit = true, //special charecter
+                RequireDigit = false,
+                RequireLowercase = true,
+                RequireUppercase = true
+            };
+
             return appUserManager;
         }
     }
