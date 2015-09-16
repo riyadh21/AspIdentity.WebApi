@@ -9,6 +9,8 @@ using Microsoft.Owin;
 
 namespace AspNetIdentity.WebApi.Infrastructure
 {
+    using AspNetIdentity.WebApi.Validators;
+
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -21,7 +23,6 @@ namespace AspNetIdentity.WebApi.Infrastructure
             var appDbContext = context.Get<ApplicationDbContext>();
             var appUserManager = new ApplicationUserManager(new UserStore<ApplicationUser>(appDbContext));
 
-            //Rest of code is removed for clarity
             appUserManager.EmailService = new AspNetIdentity.WebApi.Services.EmailService();
 
             var dataProtectionProvider = options.DataProtectionProvider;
@@ -34,22 +35,42 @@ namespace AspNetIdentity.WebApi.Infrastructure
                 };
             }
 
-            //Rest of code is removed for brevity
             //Configure validation logic for usernames
-            appUserManager.UserValidator = new UserValidator<ApplicationUser>(appUserManager)
+            //appUserManager.UserValidator = new UserValidator<ApplicationUser>(appUserManager)
+            //{
+            //    AllowOnlyAlphanumericUserNames = true,
+            //    RequireUniqueEmail = true
+            //};
+
+            //Configure validation logic for usernames  || custom validator
+            //only support these domain "outlook.com", "hotmail.com", "gmail.com", "yahoo.com" , "yopmail.com"
+            //if you do not want to restrict domain then use the above comented code.
+            appUserManager.UserValidator = new MyCustomUserValidator(appUserManager)
             {
                 AllowOnlyAlphanumericUserNames = true,
                 RequireUniqueEmail = true
             };
 
             //Configure validation logic for passwords
-            appUserManager.PasswordValidator = new PasswordValidator
+            //appUserManager.PasswordValidator = new PasswordValidator
+            //{
+            //    RequiredLength = 6, //length atleast 6 char
+            //    RequireNonLetterOrDigit = true, //special charecter
+            //    RequireDigit = false,
+            //    RequireLowercase = true,
+            //    RequireUppercase = true
+            //};
+
+            // Configure validation logic for passwords || custom validator for password 
+            //(this is vary basic test to check the custom validation)
+            //If you do not want to restrict domain then use the above comented code.
+            appUserManager.PasswordValidator = new MyCustomPasswordValidator
             {
                 RequiredLength = 6, //length atleast 6 char
                 RequireNonLetterOrDigit = true, //special charecter
                 RequireDigit = false,
                 RequireLowercase = true,
-                RequireUppercase = true
+                RequireUppercase = true,
             };
 
             return appUserManager;
