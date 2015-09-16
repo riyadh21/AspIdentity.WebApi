@@ -127,7 +127,36 @@ namespace AspNetIdentity.WebApi.Controllers
                 return GetErrorResult(result);
             }
 
+            // sent user a mail notificatin about successfully password change
+            await this.AppUserManager.SendEmailAsync(User.Identity.GetUserId(), "Change password confirmation", "Your password hasbeen changed successfully");
+
             return Ok();
+        }
+
+
+        [Route("user/{id:guid}")]
+        public async Task<IHttpActionResult> DeleteUser(string id)
+        {
+
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
+
+            if (appUser != null)
+            {
+                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
+
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+
+                return Ok();
+
+            }
+
+            return NotFound();
+
         }
     }
 }
