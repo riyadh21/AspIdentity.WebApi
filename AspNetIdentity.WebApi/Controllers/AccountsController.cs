@@ -92,6 +92,8 @@ namespace AspNetIdentity.WebApi.Controllers
         [Route("ConfirmEmail", Name = "ConfirmEmailRoute")]
         public async Task<IHttpActionResult> ConfirmEmail(string userId = "", string code = "")
         {
+            // another task need to implement for better security
+            // check with password before activating usr.
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
             {
                 ModelState.AddModelError("", "User Id and Code are required");
