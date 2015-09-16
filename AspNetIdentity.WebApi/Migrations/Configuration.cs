@@ -25,16 +25,16 @@ namespace AspNetIdentity.WebApi.Migrations
 
             var user = new ApplicationUser()
             {
-                UserName = "SuperPowerUser",
-                Email = "taiseer.joudeh@mymail.com",
+                UserName = "riyadh.islam",
+                Email = "riyadh21@gmail.com",
                 EmailConfirmed = true,
-                FirstName = "Taiseer",
-                LastName = "Joudeh",
+                FirstName = "Riyadh ul",
+                LastName = "Islam",
                 Level = 1,
                 JoinDate = DateTime.Now.AddYears(-3)
             };
 
-            manager.Create(user, "MySuperP@ssword!");
+            manager.Create(user, "@Test1234");
         }
     }
 }
