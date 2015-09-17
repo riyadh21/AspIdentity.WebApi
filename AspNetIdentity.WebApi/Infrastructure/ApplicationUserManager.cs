@@ -75,5 +75,6 @@ namespace AspNetIdentity.WebApi.Infrastructure
 
             return appUserManager;
         }
+
     }
 }
