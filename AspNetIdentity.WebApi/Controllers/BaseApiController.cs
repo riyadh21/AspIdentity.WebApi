@@ -13,9 +13,9 @@ namespace AspNetIdentity.WebApi.Controllers
 {
     public class BaseApiController : ApiController
     {
-
         private ModelFactory _modelFactory;
         private ApplicationUserManager _AppUserManager = null;
+        private ApplicationRoleManager _AppRoleManager = null;
 
         protected ApplicationUserManager AppUserManager
         {
@@ -68,6 +68,14 @@ namespace AspNetIdentity.WebApi.Controllers
             }
 
             return null;
+        }
+
+        protected ApplicationRoleManager AppRoleManager
+        {
+            get
+            {
+                return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
         }
     }
 }

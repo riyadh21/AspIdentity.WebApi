@@ -16,14 +16,14 @@ namespace AspNetIdentity.WebApi.Controllers
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
             return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}", Name = "GetUserById")]
         public async Task<IHttpActionResult> GetUser(string Id)
         {
@@ -38,7 +38,7 @@ namespace AspNetIdentity.WebApi.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [Route("user/{username}")]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
@@ -138,30 +138,24 @@ namespace AspNetIdentity.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}")]
         public async Task<IHttpActionResult> DeleteUser(string id)
         {
-
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
-
             var appUser = await this.AppUserManager.FindByIdAsync(id);
 
             if (appUser != null)
             {
                 IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
-
                 if (!result.Succeeded)
                 {
                     return GetErrorResult(result);
                 }
 
                 return Ok();
-
             }
-
             return NotFound();
-
         }
     }
 }

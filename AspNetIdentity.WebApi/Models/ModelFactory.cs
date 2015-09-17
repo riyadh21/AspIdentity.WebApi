@@ -10,6 +10,8 @@ namespace AspNetIdentity.WebApi.Models
 
     using AspNetIdentity.WebApi.Infrastructure;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     public class ModelFactory
     {
         private UrlHelper _UrlHelper;
@@ -37,6 +39,17 @@ namespace AspNetIdentity.WebApi.Models
                 Claims = _AppUserManager.GetClaimsAsync(appUser.Id).Result
             };
         }
+
+        public RoleReturnModel Create(IdentityRole appRole)
+        {
+
+            return new RoleReturnModel
+            {
+                Url = _UrlHelper.Link("GetRoleById", new { id = appRole.Id }),
+                Id = appRole.Id,
+                Name = appRole.Name
+            };
+        }
     }
 
     public class UserReturnModel
@@ -51,5 +64,12 @@ namespace AspNetIdentity.WebApi.Models
         public DateTime JoinDate { get; set; }
         public IList<string> Roles { get; set; }
         public IList<System.Security.Claims.Claim> Claims { get; set; }
+    }
+
+    public class RoleReturnModel
+    {
+        public string Url { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }
