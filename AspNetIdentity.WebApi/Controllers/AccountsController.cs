@@ -12,6 +12,7 @@ namespace AspNetIdentity.WebApi.Controllers
     using AspNetIdentity.WebApi.Models;
 
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
@@ -23,7 +24,7 @@ namespace AspNetIdentity.WebApi.Controllers
             return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         [Route("user/{id:guid}", Name = "GetUserById")]
         public async Task<IHttpActionResult> GetUser(string Id)
         {
@@ -61,6 +62,7 @@ namespace AspNetIdentity.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var createUser = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
             var user = new ApplicationUser()
             {
@@ -87,8 +89,11 @@ namespace AspNetIdentity.WebApi.Controllers
 
             Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
-            return Created(locationHeader, TheModelFactory.Create(user));
+            var adminUser = createUser.FindByName(user.UserName);
 
+            createUser.AddToRoles(adminUser.Id, new string[] { "User" });
+            
+            return Created(locationHeader, TheModelFactory.Create(user));
         }
 
         [AllowAnonymous]
