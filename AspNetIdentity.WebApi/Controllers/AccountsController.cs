@@ -18,7 +18,9 @@ namespace AspNetIdentity.WebApi.Controllers
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
-        [Authorize(Roles = "User")]
+        private AuthRepository repository = null;
+
+        [Authorize(Roles = "Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
@@ -164,15 +166,17 @@ namespace AspNetIdentity.WebApi.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize]
         [Route("logout")]
-        public async Task<IHttpActionResult> Logout()
+        public async Task<IHttpActionResult> Logout(string tokenId)
         {
-            //var ctx = Request.GetOwinContext();
-            //var auth = ctx.Authentication;
-            //auth.SignOut();
-           // Request.GetOwinContext().Authentication.SignOut();
-            return this.Ok();
+            var result = await repository.RemoveRefreshToken(tokenId);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest("Token Id does not exist");
         }
     }
 }
