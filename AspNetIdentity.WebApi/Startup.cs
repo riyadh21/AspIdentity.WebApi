@@ -68,9 +68,10 @@ namespace AspNetIdentity.WebApi
                 //For Dev enviroment only (on production should be AllowInsecureHttp = false)
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/oauth/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30), //using 30 min expiary
                 Provider = new CustomOAuthProvider(),
-                AccessTokenFormat = new CustomJwtFormat(appHostingUrl)
+                AccessTokenFormat = new CustomJwtFormat(appHostingUrl),
+                RefreshTokenProvider = new SimpleRefreshTokenProvider()
             };
 
             // OAuth 2.0 Bearer Access Token Generation

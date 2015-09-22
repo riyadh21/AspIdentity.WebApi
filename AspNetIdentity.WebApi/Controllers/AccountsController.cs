@@ -5,6 +5,7 @@ using System.Web;
 
 namespace AspNetIdentity.WebApi.Controllers
 {
+    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
 
@@ -17,7 +18,7 @@ namespace AspNetIdentity.WebApi.Controllers
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
@@ -161,6 +162,17 @@ namespace AspNetIdentity.WebApi.Controllers
                 return Ok();
             }
             return NotFound();
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("logout")]
+        public async Task<IHttpActionResult> Logout()
+        {
+            //var ctx = Request.GetOwinContext();
+            //var auth = ctx.Authentication;
+            //auth.SignOut();
+           // Request.GetOwinContext().Authentication.SignOut();
+            return this.Ok();
         }
     }
 }
