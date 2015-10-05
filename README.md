@@ -13,3 +13,9 @@ to enable it please open Package manager console and run this script
 
 This is a OAuth user management with authentication and
 authorization with refresh token. feel free to use this to your application.
+
+--- Update 2015-09-23----
+App hosting to apphurber
+http://aspnetidentitywebapi.apphb.com
+
+To check use rest client (more update on API endpoint will comming soon)
