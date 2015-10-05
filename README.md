@@ -19,3 +19,17 @@ App hosting to apphurber
 http://aspnetidentitywebapi.apphb.com
 
 To check use rest client (more update on API endpoint will comming soon)
+
+---- Generate Machine key---------------------------------------------------------------------------------------------
+you need to generate machine key and put that to webconfig.
+this is asample key not provide to  your system rather generate new and do not use 3rd party. use powershall
+this is sample using here
+    <machineKey validationKey="A970D0E3C36AA17C43C5DB225C778B3392BAED4D7089C6AAF76E3D4243E64FD797BD17611868E85D2E4E1C8B6F1FB684B0C8DBA0C39E20284B7FCA73E0927B20"
+            decryptionKey="88274072DD5AC1FB6CED8281B34CDC6E79DD7223243A527D46C09CF6CA58DB68"
+            validation="SHA1"
+            decryption="AES" />
+           
+ Powershall command
+ PS C:\> . .\Generate-MachineKey.ps1
+ PS C:\> Generate-MachineKey -validationAlgorithm SHA1
+ ---------------------------------------------------------------------------------------------------------------------
